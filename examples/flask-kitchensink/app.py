@@ -131,7 +131,7 @@ def handle_text_message(event):
                 template_message
             ]
         )
-    elif text in ['很好', '普普', '不好', 'Meme']:
+    elif text in ['很好', '普普', '不好', 'Meme', 'Joke']:
         r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
             event.reply_token, [
