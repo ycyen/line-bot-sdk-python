@@ -144,7 +144,7 @@ def handle_text_message(event):
         line_bot_api.reply_message(
             event.reply_token, [
                 ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
-                TextSendMessage(text='(from me_irl')),
+                TextSendMessage(text='(from me_irl)'),
                 TextSendMessage(text='祝你有美好的一天～')
             ]
         )
