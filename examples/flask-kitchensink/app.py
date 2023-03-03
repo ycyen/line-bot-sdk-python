@@ -179,15 +179,6 @@ def handle_text_message(event):
         template_message = TemplateSendMessage(
             alt_text='Buttons alt text', template=buttons_template)
         line_bot_api.reply_message(event.reply_token, template_message)
-    elif text in ['很好', '普普', '不好']:
-        r_json = requests.get("https://meme-api.com/gimme/memes").json()
-        line_bot_api.reply_message(
-            event.reply_token, [
-                TextSendMessage(text='謝謝你的回覆，送你一張梗圖'),
-                ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
-                TextSendMessage(text='祝你有美好的一天～')
-            ]
-        )
     elif text == 'emojis':
         emojis = [
             {
@@ -716,8 +707,25 @@ def handle_leave():
 
 
 @handler.add(PostbackEvent)
+
+
+                PostbackAction(label='😄', data='很好'),
+                PostbackAction(label='🙂', data='普普'),
+                PostbackAction(label='🙁', data='不好'),
+
 def handle_postback(event):
     if event.postback.data == 'ping':
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text='pong'))
+    elif event.postback.data in ['😄', '很好'] or event.postback.data in ['🙂', '普普'] or event.postback.data in ['🙁', '不好']:
+        r_json = requests.get("https://meme-api.com/gimme/memes").json()
+        line_bot_api.reply_message(
+            event.reply_token, [
+                TextSendMessage(text='謝謝你的回覆，送你一張梗圖'),
+                ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
+                TextSendMessage(text='祝你有美好的一天～')
+            ]
+        )
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text='pong'))
     elif event.postback.data == 'datetime_postback':
