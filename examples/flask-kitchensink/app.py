@@ -23,6 +23,9 @@ import requests
 from argparse import ArgumentParser
 from flask_crontab import Crontab
 
+
+import openai
+
 from flask import Flask, request, abort, send_from_directory
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -64,6 +67,12 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
+
+openai.api_key=os.getenv('OPEN_AI_API_KEY', None)
+messages = [
+	{"role": "system", "content": "You are acting as user's soulmate."},
+	{"role": "system", "content": "Response in less than 40 works."},
+]
 
 
 # function for create tmp dir for download content
@@ -617,9 +626,14 @@ def handle_text_message(event):
             ]
         )
     else:
-        pass
-#         line_bot_api.reply_message(
-#             event.reply_token, TextSendMessage(text=event.message.text))
+        message = event.message.text
+        messages.append({"role":"user","content": message})
+        response=openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+        reply = response["choices"][0]["message"]["content"]
+        messages.append({"role":"assistant","content": reply})
+        
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=reply))
 
 
 @handler.add(MessageEvent, message=LocationMessage)
