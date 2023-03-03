@@ -117,7 +117,7 @@ def handle_text_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="Bot can't use profile API without user ID"))
-    elif text in ['Meme', 'Joke']:
+    elif text.lower() in ['meme', 'joke']:
         r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
             event.reply_token, [
@@ -125,7 +125,7 @@ def handle_text_message(event):
                 TextSendMessage(text='祝你有美好的一天～')
             ]
         )
-    elif text in 'Memee':
+    elif text.lower() in 'memee':
         r_json = requests.get("https://meme-api.com/gimme/me_irl").json()
         line_bot_api.reply_message(
             event.reply_token, [
@@ -145,6 +145,15 @@ def handle_text_message(event):
         template_message = TemplateSendMessage(
             alt_text='Buttons alt text', template=buttons_template)
         line_bot_api.reply_message(event.reply_token, template_message)
+    elif text.lower() in 'admin':
+        line_bot_api.reply_message(
+            event.reply_token, [
+                TextSendMessage(text='Run following commands:'),
+                TextSendMessage(text='Start ducky daily'),
+                TextSendMessage(text='Test ducky daily'),
+                TextSendMessage(text='Test ducky')
+            ]
+        )
     elif text == 'Start ducky daily':
         buttons_template = ButtonsTemplate(
             title='你今天過得好嗎？', text='選一個', actions=[
@@ -600,7 +609,7 @@ def handle_text_message(event):
         else:
             messages = [TextSendMessage(text='available: false')]
         line_bot_api.reply_message(event.reply_token, messages)
-    elif text == 'help':
+    elif text.lower() == 'help':
         r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
             event.reply_token, [
