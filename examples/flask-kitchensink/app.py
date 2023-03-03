@@ -19,6 +19,7 @@ import json
 import os
 import sys
 import tempfile
+import requests
 from argparse import ArgumentParser
 from flask_crontab import Crontab
 
