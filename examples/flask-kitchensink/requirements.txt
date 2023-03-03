@@ -1,4 +1,5 @@
 line-bot-sdk
 flask
+requests
 flask-crontab
 werkzeug>=0.15.4
