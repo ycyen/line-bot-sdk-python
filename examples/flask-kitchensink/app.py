@@ -687,14 +687,14 @@ def send_static_content(path):
     return send_from_directory('static', path)
 
 
-@crontab.job(minute="2", hour="0")
-def my_scheduled_job():
-    app.logger.info("Cron job!")
-    line_bot_api.broadcast(
-        [
-            TextSendMessage(text='THIS IS A BROADCAST MESSAGE FROM CRON JOB.'),
-        ]
-    )
+# @crontab.job(minute="2", hour="0")
+# def my_scheduled_job():
+#     app.logger.info("Cron job!")
+#     line_bot_api.broadcast(
+#         [
+#             TextSendMessage(text='THIS IS A BROADCAST MESSAGE FROM CRON JOB.'),
+#         ]
+#     )
 
 
 if __name__ == "__main__":
