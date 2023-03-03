@@ -132,11 +132,20 @@ def handle_text_message(event):
                 template_message
             ]
         )
-    elif text in ['很好', '普普', '不好', 'Joke']:
+    elif text in ['很好', '普普', '不好', 'Meme']:
+        r_json = requests.get("https://meme-api.com/gimme/memes").json()
+        line_bot_api.reply_message(
+            event.reply_token, [
+                ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
+                TextSendMessage(text='祝你有美好的一天～')
+            ]
+        )
+   elif text in 'Meme2':
         r_json = requests.get("https://meme-api.com/gimme/me_irl").json()
         line_bot_api.reply_message(
             event.reply_token, [
                 ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
+                TextSendMessage(text='(from me_irl')),
                 TextSendMessage(text='祝你有美好的一天～')
             ]
         )
