@@ -716,12 +716,6 @@ def handle_leave():
 
 
 @handler.add(PostbackEvent)
-
-
-                PostbackAction(label='😄', data='很好'),
-                PostbackAction(label='🙂', data='普普'),
-                PostbackAction(label='🙁', data='不好'),
-
 def handle_postback(event):
     if event.postback.data == 'ping':
         line_bot_api.reply_message(
