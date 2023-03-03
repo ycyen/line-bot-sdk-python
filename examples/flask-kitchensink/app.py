@@ -149,7 +149,7 @@ def handle_text_message(event):
         line_bot_api.reply_message(
             event.reply_token, [
                 TextSendMessage(text='Run following commands:'),
-                TextSendMessage(text='Start ducky daily'),
+                TextSendMessage(text='Start ducky daily (this is using broadcast)'),
                 TextSendMessage(text='Test ducky daily'),
                 TextSendMessage(text='Test ducky')
             ]
@@ -724,6 +724,7 @@ def handle_postback(event):
         r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
             event.reply_token, [
+                TextSendMessage(text='你的回覆是"' + event.postback.data + '"'),
                 TextSendMessage(text='謝謝你的回覆，送你一張梗圖'),
                 ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
                 TextSendMessage(text='祝你有美好的一天～')
