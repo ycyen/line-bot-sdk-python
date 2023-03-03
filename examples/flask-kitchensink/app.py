@@ -32,7 +32,7 @@ from linebot.exceptions import (
     LineBotApiError, InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
+    MessageEvent, TextMessage, TextSendMessage, ImageSendMessage,
     SourceUser, SourceGroup, SourceRoom,
     TemplateSendMessage, ConfirmTemplate, MessageAction,
     ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URIAction,
@@ -117,8 +117,8 @@ def handle_text_message(event):
                 event.reply_token,
                 TextSendMessage(text="Bot can't use profile API without user ID"))
     elif text == 'Joke':
-        img_url = requests.post("https://meme-api.com/gimme/me_irl").json().get("url")
-        text_message = TextSendMessage(text=img_url)
+        r_json = requests.post("https://meme-api.com/gimme/me_irl").json()
+        text_message = ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1],)
         line_bot_api.reply_message(
             event.reply_token, [
                 text_message
