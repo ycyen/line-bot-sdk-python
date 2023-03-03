@@ -20,6 +20,7 @@ import os
 import sys
 import tempfile
 from argparse import ArgumentParser
+from flask_crontab import Crontab
 
 from flask import Flask, request, abort, send_from_directory
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -49,6 +50,7 @@ from linebot.models import (
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1, x_proto=1)
+crontab = Crontab(app)
 
 # get channel_secret and channel_access_token from your environment variable
 channel_secret = os.getenv('LINE_CHANNEL_SECRET', None)
@@ -683,6 +685,16 @@ def handle_member_left(event):
 @app.route('/static/<path:path>')
 def send_static_content(path):
     return send_from_directory('static', path)
+
+
+@crontab.job(minute="2", hour="0")
+def my_scheduled_job():
+    print('cron job!')
+#     line_bot_api.broadcast(
+#         [
+#             TextSendMessage(text='THIS IS A BROADCAST MESSAGE'),
+#         ]
+#     )
 
 
 if __name__ == "__main__":
