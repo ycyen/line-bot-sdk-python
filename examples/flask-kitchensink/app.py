@@ -139,7 +139,7 @@ def handle_text_message(event):
                 TextSendMessage(text='祝你有美好的一天～')
             ]
         )
-   elif text in 'Meme2':
+    elif text in 'Memee':
         r_json = requests.get("https://meme-api.com/gimme/me_irl").json()
         line_bot_api.reply_message(
             event.reply_token, [
