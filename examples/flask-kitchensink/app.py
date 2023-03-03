@@ -117,6 +117,34 @@ def handle_text_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="Bot can't use profile API without user ID"))
+    elif text in ['Meme', 'Joke']:
+        r_json = requests.get("https://meme-api.com/gimme/memes").json()
+        line_bot_api.reply_message(
+            event.reply_token, [
+                ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
+                TextSendMessage(text='祝你有美好的一天～')
+            ]
+        )
+    elif text in 'Memee':
+        r_json = requests.get("https://meme-api.com/gimme/me_irl").json()
+        line_bot_api.reply_message(
+            event.reply_token, [
+                ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
+                TextSendMessage(text='(from me_irl)'),
+                TextSendMessage(text='祝你有美好的一天～')
+            ]
+        )
+    elif text == 'buttons':
+        buttons_template = ButtonsTemplate(
+            title='My buttons sample', text='Hello, my buttons', actions=[
+                URIAction(label='Go to line.me', uri='https://line.me'),
+                PostbackAction(label='ping', data='ping'),
+                PostbackAction(label='ping with text', data='ping', text='ping'),
+                MessageAction(label='Translate Rice', text='米')
+            ])
+        template_message = TemplateSendMessage(
+            alt_text='Buttons alt text', template=buttons_template)
+        line_bot_api.reply_message(event.reply_token, template_message)
     elif text == 'Start ducky daily':
         buttons_template = ButtonsTemplate(
             title='你今天過得好嗎？', text='選一個', actions=[
@@ -131,20 +159,32 @@ def handle_text_message(event):
                 template_message
             ]
         )
-    elif text in ['很好', '普普', '不好', 'Meme', 'Joke']:
+    elif text == 'Test ducky daily':
+        buttons_template = ButtonsTemplate(
+            title='你今天過得好嗎？', text='選一個', actions=[
+                PostbackAction(label='😄', data='很好'),
+                PostbackAction(label='🙂', data='普普'),
+                PostbackAction(label='🙁', data='不好'),
+            ])
+        template_message = TemplateSendMessage(
+            alt_text='Buttons alt text', template=buttons_template)
+        line_bot_api.reply_message(event.reply_token, template_message)
+    elif text == 'Test ducky':
+        buttons_template = ButtonsTemplate(
+            title='你今天過得好嗎？', text='選一個', actions=[
+                PostbackAction(label='很好', data='很好'),
+                PostbackAction(label='普普', data='普普'),
+                PostbackAction(label='不好', data='不好'),
+            ])
+        template_message = TemplateSendMessage(
+            alt_text='Buttons alt text', template=buttons_template)
+        line_bot_api.reply_message(event.reply_token, template_message)
+    elif text in ['很好', '普普', '不好']:
         r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
             event.reply_token, [
+                TextSendMessage(text='謝謝你的回覆，送你一張梗圖')
                 ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
-                TextSendMessage(text='祝你有美好的一天～')
-            ]
-        )
-    elif text in 'Memee':
-        r_json = requests.get("https://meme-api.com/gimme/me_irl").json()
-        line_bot_api.reply_message(
-            event.reply_token, [
-                ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
-                TextSendMessage(text='(from me_irl)'),
                 TextSendMessage(text='祝你有美好的一天～')
             ]
         )
@@ -238,17 +278,6 @@ def handle_text_message(event):
         ])
         template_message = TemplateSendMessage(
             alt_text='Confirm alt text', template=confirm_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
-    elif text == 'buttons':
-        buttons_template = ButtonsTemplate(
-            title='My buttons sample', text='Hello, my buttons', actions=[
-                URIAction(label='Go to line.me', uri='https://line.me'),
-                PostbackAction(label='ping', data='ping'),
-                PostbackAction(label='ping with text', data='ping', text='ping'),
-                MessageAction(label='Translate Rice', text='米')
-            ])
-        template_message = TemplateSendMessage(
-            alt_text='Buttons alt text', template=buttons_template)
         line_bot_api.reply_message(event.reply_token, template_message)
     elif text == 'carousel':
         carousel_template = CarouselTemplate(columns=[
