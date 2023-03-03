@@ -117,6 +117,13 @@ def handle_text_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="Bot can't use profile API without user ID"))
+    elif text == 'help':
+        r_json = requests.get("https://meme-api.com/gimme/memes").json()
+        line_bot_api.reply_message(
+            event.reply_token, [
+                TextSendMessage(text='Try Meme or Joke or Memee :)')
+            ]
+        )
     elif text in ['Meme', 'Joke']:
         r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
@@ -183,7 +190,7 @@ def handle_text_message(event):
         r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
             event.reply_token, [
-                TextSendMessage(text='謝謝你的回覆，送你一張梗圖')
+                TextSendMessage(text='謝謝你的回覆，送你一張梗圖'),
                 ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
                 TextSendMessage(text='祝你有美好的一天～')
             ]
