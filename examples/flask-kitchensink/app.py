@@ -126,7 +126,6 @@ def handle_text_message(event):
             ])
         template_message = TemplateSendMessage(
             alt_text='Buttons alt text', template=buttons_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
         line_bot_api.broadcast(
             [
                 template_message
