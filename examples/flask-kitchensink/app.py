@@ -116,6 +116,14 @@ def handle_text_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="Bot can't use profile API without user ID"))
+    elif text == 'Joke':
+        img_url = requests.post("https://meme-api.com/gimme/me_irl").json().get("url")
+        text_message = TextSendMessage(text=img_url)
+        line_bot_api.reply_message(
+            event.reply_token, [
+                text_message
+            ]
+        )
     elif text == 'emojis':
         emojis = [
             {
