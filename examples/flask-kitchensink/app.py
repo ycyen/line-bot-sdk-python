@@ -117,11 +117,26 @@ def handle_text_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="Bot can't use profile API without user ID"))
-    elif text == 'Joke':
+    elif text == 'Start ducky daily':
+        buttons_template = ButtonsTemplate(
+            title='你今天過得好嗎？', text='選一個', actions=[
+                PostbackAction(label='😄', data='很好'),
+                PostbackAction(label='🙂', data='普普'),
+                PostbackAction(label='🙁', data='不好'),
+            ])
+        template_message = TemplateSendMessage(
+            alt_text='Buttons alt text', template=buttons_template)
+        line_bot_api.reply_message(event.reply_token, template_message)
+        line_bot_api.broadcast(
+            [
+                template_message
+            ]
+        )
+    elif text in ['很好', '普普', '不好', 'Joke']:
         r_json = requests.get("https://meme-api.com/gimme/me_irl").json()
         line_bot_api.reply_message(
             event.reply_token, [
-                ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[0]),
+                ImageSendMessage(original_content_url=r_json.get("url"), preview_image_url=r_json.get("preview")[-1]),
                 TextSendMessage(text='祝你有美好的一天～')
             ]
         )
