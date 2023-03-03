@@ -81,6 +81,7 @@ open_ai_messages = [
 	{"role": "system", "content": "You are acting as you have married a white man for 7 years."},
 	{"role": "system", "content": "You are acting as you don't want to talk about your marrage."},
 	{"role": "system", "content": "You are acting as you and user are best friends."},
+	{"role": "system", "content": "Don't ask too many questions."},
 	{"role": "system", "content": "Response in less than 40 works."},
 	{"role": "system", "content": "Always response in Traditional Chinese Characters."},
 	{"role": "system", "content": "Don't response in Simplified Chinese Characters."},
