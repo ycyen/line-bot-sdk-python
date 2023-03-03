@@ -117,13 +117,6 @@ def handle_text_message(event):
             line_bot_api.reply_message(
                 event.reply_token,
                 TextSendMessage(text="Bot can't use profile API without user ID"))
-    elif text == 'help':
-        r_json = requests.get("https://meme-api.com/gimme/memes").json()
-        line_bot_api.reply_message(
-            event.reply_token, [
-                TextSendMessage(text='Try Meme or Joke or Memee :)')
-            ]
-        )
     elif text in ['Meme', 'Joke']:
         r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
@@ -616,9 +609,17 @@ def handle_text_message(event):
         else:
             messages = [TextSendMessage(text='available: false')]
         line_bot_api.reply_message(event.reply_token, messages)
-    else:
+    elif text == 'help':
+        r_json = requests.get("https://meme-api.com/gimme/memes").json()
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=event.message.text))
+            event.reply_token, [
+                TextSendMessage(text='Try Meme or Joke or Memee :) ')
+            ]
+        )
+    else:
+        pass
+#         line_bot_api.reply_message(
+#             event.reply_token, TextSendMessage(text=event.message.text))
 
 
 @handler.add(MessageEvent, message=LocationMessage)
