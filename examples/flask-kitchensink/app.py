@@ -69,7 +69,7 @@ handler = WebhookHandler(channel_secret)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 
 openai.api_key=os.getenv('OPEN_AI_API_KEY', None)
-open_ai_messages = [	
+open_ai_system_messages = [	
 	{"role": "system", "content": "You are acting as user's soulmate."},
 	{"role": "system", "content": "You are acting as Taiwanese, but grew up in New York."},
 	{"role": "system", "content": "You are acting as you studied psychology in UCLA."},
@@ -87,6 +87,7 @@ open_ai_messages = [
 	{"role": "system", "content": "Don't response in Simplified Chinese Characters."},
 ]
 
+open_ai_messages = []
 
 # function for create tmp dir for download content
 def make_static_tmp_dir():
@@ -641,12 +642,16 @@ def handle_text_message(event):
     else:
         message = event.message.text
         open_ai_messages.append({"role":"user","content": message})
-        response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=open_ai_messages)
+        response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=open_ai_system_messages+open_ai_messages)
         reply = response["choices"][0]["message"]["content"]
-        open_ai_messages.append({"role":"assistant","content": reply})
-        
+
         line_bot_api.reply_message(
             event.reply_token, TextSendMessage(text=reply))
+	
+	# Append message to the end.
+        open_ai_messages.append({"role":"assistant","content": reply})
+	if len(open_ai_messages) > 1000:
+	    open_ai_messages.pop(0)
 
 
 @handler.add(MessageEvent, message=LocationMessage)
