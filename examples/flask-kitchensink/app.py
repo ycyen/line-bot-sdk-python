@@ -650,8 +650,8 @@ def handle_text_message(event):
 	
 	# Append message to the end.
         open_ai_messages.append({"role":"assistant","content": reply})
-	if len(open_ai_messages) > 1000:
-	    open_ai_messages.pop(0)
+        if len(open_ai_messages) > 1000:
+            open_ai_messages.pop(0)
 
 
 @handler.add(MessageEvent, message=LocationMessage)
